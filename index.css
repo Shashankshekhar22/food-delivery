@@ -44,3 +44,16 @@
   margin: 5px;
   padding: 5px;
 }
+
+.shimmer-container {
+  display: flex;
+  flex-grow: wrap;
+}
+
+.shimmer-card {
+  width: 200px;
+  height: 450px;
+  padding: 5px;
+  margin: 5px;
+  background-color: beige;
+}
