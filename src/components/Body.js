@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { SWIGGY_URL } from "../utils/constants";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
+import useOnlineStatus from "../utils/useOnlineStatus";
 
 const Body = () => {
   // State Variable HOOKS
@@ -23,7 +24,10 @@ const Body = () => {
     setFilteredListOfRestaurant(resConvertedData);
     setListOfRestaurant(resConvertedData);
   };
-
+  const onlineStatus = useOnlineStatus();
+  if (!onlineStatus) {
+    return <h1>You are offline</h1>;
+  }
   return listOfRestaurants.length === 0 ? (
     <Shimmer />
   ) : (
