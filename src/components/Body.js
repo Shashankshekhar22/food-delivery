@@ -31,10 +31,10 @@ const Body = () => {
   return listOfRestaurants.length === 0 ? (
     <Shimmer />
   ) : (
-    <div className="body">
-      <div className="filter">
+    <div className="bg-slate-100">
+      <div className="m-4 p-4">
         <button
-          className="res-btn"
+          className="m-2 w-72 h-10 align-middle text-center text-white rounded-3xl bg-blue-500 hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:ring focus:ring-violet-300"
           onClick={() => {
             const filteredList = listOfRestaurants.filter(
               (restaurantData) => restaurantData.info.avgRating > 4
@@ -48,10 +48,13 @@ const Body = () => {
         </button>
         <input
           type="text"
+          placeholder="Search"
+          className="m-4 bg-white border border-slate-300 p-1 rounded-md shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1"
           value={searchText}
           onChange={(event) => setSearchText(event.target.value)}
         />
         <button
+          className="m-2 w-32 h-10 align-middle text-center text-white rounded-3xl bg-blue-500 hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:ring focus:ring-violet-300"
           onClick={() => {
             const filteredRestaurant = listOfRestaurants.filter((resData) => {
               return resData.info.name
@@ -64,6 +67,7 @@ const Body = () => {
           Search
         </button>
         <button
+          className="m-2 w-32 h-10 align-middle text-center text-white rounded-3xl bg-blue-500 hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:ring focus:ring-violet-300"
           onClick={() => {
             setFilteredListOfRestaurant(listOfRestaurants);
             setSearchText("");
@@ -72,7 +76,7 @@ const Body = () => {
           Reset
         </button>
       </div>
-      <div className="res-container">
+      <div className="flex flex-wrap">
         {filteredListOfRestaurant.map((responseData) => (
           <Link
             to={"/restaurants/" + responseData?.info.id}
