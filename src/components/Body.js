@@ -1,9 +1,10 @@
 import RestaurantCard, { vegRestaurantCard } from "./RestaurantCard";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SWIGGY_URL } from "../utils/constants";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
+import UserContext from "../utils/UserContext";
 
 const Body = () => {
   // State Variable HOOKS
@@ -11,6 +12,7 @@ const Body = () => {
   const [filteredListOfRestaurant, setFilteredListOfRestaurant] = useState([]);
   const [searchText, setSearchText] = useState("");
   const RestaurantCardVeg = vegRestaurantCard(RestaurantCard);
+  const { loggedInUser, setUserName } = useContext(UserContext);
   useEffect(() => {
     fetchData();
   }, []);
@@ -23,7 +25,6 @@ const Body = () => {
         ?.restaurants;
     setFilteredListOfRestaurant(resConvertedData);
     setListOfRestaurant(resConvertedData);
-    console.log(filteredListOfRestaurant);
   };
   const onlineStatus = useOnlineStatus();
   if (!onlineStatus) {
@@ -41,8 +42,6 @@ const Body = () => {
               (restaurantData) => restaurantData.info.avgRating > 4
             );
             setFilteredListOfRestaurant(filteredList);
-
-            console.log(listOfRestaurants);
           }}
         >
           Top Rated Restaurant
@@ -76,6 +75,13 @@ const Body = () => {
         >
           Reset
         </button>
+        <input
+          type="text"
+          placeholder="Update User Name"
+          className="m-4 bg-white border border-slate-300 p-1 rounded-md shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1"
+          value={loggedInUser}
+          onChange={(event) => setUserName(event.target.value)}
+        />
       </div>
       <div className="flex flex-wrap">
         {filteredListOfRestaurant.map((responseData) => (
@@ -83,9 +89,6 @@ const Body = () => {
             to={"/restaurants/" + responseData?.info.id}
             key={responseData?.info.id}
           >
-            {console.log("VEGGGGG", responseData?.info?.veg)}
-            {/* <RestaurantCard resData={responseData} /> */}
-
             {responseData.info.veg ? (
               <RestaurantCardVeg resData={responseData} />
             ) : (
