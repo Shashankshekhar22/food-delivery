@@ -1,28 +1,40 @@
 import Shimmer from "./Shimmer";
 import { useParams } from "react-router-dom";
 import useRestaurantMenu from "../utils/useRestaurantMenu";
+import RestaurantMenuCategories from "./RestaurantMenuCategories";
+import { useState } from "react";
 
 const RestaurantMenu = () => {
   const { resId } = useParams();
 
   const resInfo = useRestaurantMenu(resId);
+  const [showIndex, setShowIndex] = useState(0);
 
   if (resInfo === null) <Shimmer />;
 
   const resName = resInfo?.cards[0].card.card.text;
   const resMenu =
     resInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[2]?.card?.card;
+  const updatedMenuList =
+    resInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards;
+  const itemCategories = updatedMenuList?.filter((menuCategoryList) => {
+    return (
+      menuCategoryList.card.card["@type"] ===
+      "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory"
+    );
+  });
+
   return (
-    <div className="menu">
-      <h1>{resName}</h1>
-      <h2>Menu</h2>
-      <h3>{resMenu?.title}</h3>
-      {resMenu?.itemCards.map((menuList) => {
+    <div className="max-w-lg mx-auto">
+      {itemCategories?.map((itemDetails, index) => {
         return (
-          <li key={menuList?.card?.info?.id}>
-            {menuList?.card?.info?.name} -{" "}
-            {menuList?.card?.info?.price / 100 || "Cost Not Available"};
-          </li>
+          <RestaurantMenuCategories
+            menuCategories={itemDetails}
+            index={index}
+            key={index}
+            showItems={index === showIndex ? true : false}
+            setShowIndex={() => setShowIndex(index)}
+          />
         );
       })}
     </div>
