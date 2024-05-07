@@ -1,4 +1,4 @@
-import RestaurantCard from "./RestaurantCard";
+import RestaurantCard, { vegRestaurantCard } from "./RestaurantCard";
 import { useEffect, useState } from "react";
 import { SWIGGY_URL } from "../utils/constants";
 import Shimmer from "./Shimmer";
@@ -10,7 +10,7 @@ const Body = () => {
   const [listOfRestaurants, setListOfRestaurant] = useState([]);
   const [filteredListOfRestaurant, setFilteredListOfRestaurant] = useState([]);
   const [searchText, setSearchText] = useState("");
-
+  const RestaurantCardVeg = vegRestaurantCard(RestaurantCard);
   useEffect(() => {
     fetchData();
   }, []);
@@ -23,12 +23,13 @@ const Body = () => {
         ?.restaurants;
     setFilteredListOfRestaurant(resConvertedData);
     setListOfRestaurant(resConvertedData);
+    console.log(filteredListOfRestaurant);
   };
   const onlineStatus = useOnlineStatus();
   if (!onlineStatus) {
     return <h1>You are offline</h1>;
   }
-  return listOfRestaurants.length === 0 ? (
+  return listOfRestaurants?.length === 0 ? (
     <Shimmer />
   ) : (
     <div className="bg-slate-100">
@@ -36,7 +37,7 @@ const Body = () => {
         <button
           className="m-2 w-72 h-10 align-middle text-center text-white rounded-3xl bg-blue-500 hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:ring focus:ring-violet-300"
           onClick={() => {
-            const filteredList = listOfRestaurants.filter(
+            const filteredList = listOfRestaurants?.filter(
               (restaurantData) => restaurantData.info.avgRating > 4
             );
             setFilteredListOfRestaurant(filteredList);
@@ -82,7 +83,14 @@ const Body = () => {
             to={"/restaurants/" + responseData?.info.id}
             key={responseData?.info.id}
           >
-            <RestaurantCard resData={responseData} />
+            {console.log("VEGGGGG", responseData?.info?.veg)}
+            {/* <RestaurantCard resData={responseData} /> */}
+
+            {responseData.info.veg ? (
+              <RestaurantCardVeg resData={responseData} />
+            ) : (
+              <RestaurantCard resData={responseData} />
+            )}
           </Link>
         ))}
       </div>
