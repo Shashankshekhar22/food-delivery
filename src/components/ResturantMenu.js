@@ -12,9 +12,6 @@ const RestaurantMenu = () => {
 
   if (resInfo === null) <Shimmer />;
 
-  const resName = resInfo?.cards[0].card.card.text;
-  const resMenu =
-    resInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[2]?.card?.card;
   const updatedMenuList =
     resInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards;
   const itemCategories = updatedMenuList?.filter((menuCategoryList) => {

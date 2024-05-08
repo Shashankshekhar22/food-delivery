@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { CDN_URL } from "../utils/constants";
+import { useDispatch } from "react-redux";
+import { addItem } from "../utils/cartSlice";
 const RestaurantMenuCategories = ({
   menuCategories,
   showItems,
@@ -11,6 +13,10 @@ const RestaurantMenuCategories = ({
     setShowIndex();
   };
   const itemDetails = menuCategories;
+  const disPatch = useDispatch();
+  const handleAddItemToCart = (menuList) => {
+    disPatch(addItem(menuList));
+  };
   return (
     <div className="border border-gray-300 rounded m-4">
       <div className="border-b border-gray-300">
@@ -48,6 +54,9 @@ const RestaurantMenuCategories = ({
                       className="m-2 align-middle text-center text-white bg-blue-500
                       hover:bg-blue-600 active:bg-blue-700 focus:outline-none 
                       focus:ring rounded-2xl text-md w-12 focus:ring-violet-300"
+                      onClick={() => {
+                        handleAddItemToCart(menuList);
+                      }}
                     >
                       Add
                     </button>
